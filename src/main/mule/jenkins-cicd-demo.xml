@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3ac591f4-cdf4-4f22-85b2-890c14692918" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="jenkins-cicd-demoFlow" doc:id="4a597d2f-c9a0-40a6-a8d7-832fd2775802" >
+		<http:listener doc:name="Listener" doc:id="db1e0f16-4b0f-4c22-bf0b-982d6a398eed" config-ref="HTTP_Listener_config" path="jenkins"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b0600d64-6e1e-445b-b30e-58a24d295605" message='#["Entered  Mule flow"]'/>
+		<ee:transform doc:name="Transform Message" doc:id="d6b20bce-91ef-4c8b-8b3a-829d2e96555b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"Successfully deployed to Jenkins....."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
